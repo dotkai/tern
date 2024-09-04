@@ -1,0 +1,54 @@
+<template>
+<div class="row col q-ml-md">      
+    <q-file class="col" 
+    multiple 
+    filled 
+    clearable
+    v-model="fileAdd" 
+    label="Select or Drag/Drop"
+    accept=".jpg, image/*">
+    <template v-slot:prepend>
+        <q-icon name="add_photo_alternate" />
+    </template>
+    </q-file>
+    <q-btn flat label="Add" icon="vertical_align_bottom" @click="uploadImage" />
+</div>
+</template>
+
+<script setup>
+import {ref} from 'vue'
+import { nanoid } from 'nanoid';
+import { Database } from 'src/db/db';
+
+const props = defineProps({
+    postupload: Function
+})
+
+const fs = window.electronFs
+const Images = new Database('image_files')
+const fileAdd = ref(null)
+
+async function uploadImage(){
+  // Transfer images to filesystem
+  const promise = fileAdd.value.map(file => {
+    return fs.copyImage(file, nanoid())
+  })
+
+  const results = await Promise.all(promise)
+  const dbcontent = results.map(item => {
+    return Images.add({
+      _id: item.generatedId,
+      name: item.originalName,
+      path: item.imageFileName,
+      tags: []
+    })
+  })
+  await Promise.all(dbcontent)
+    .then(_ => {
+        props.postupload()
+        fileAdd.value = null
+    })
+    .catch(e => NotifyService.error(e))
+}
+
+</script>
