@@ -1,8 +1,7 @@
 <template>
 <q-page>
-  <div class="row justify-end q-ma-md">
-    <q-btn label="Add" icon="add" color="primary" :to="{ name: 'edit_stop', params: { stop_id: 'NEW' } }" />
-  </div>
+  <ViewOptionBar :addlink="{ name: 'edit_stop', params: { stop_id: 'NEW' } }" />
+
   <q-table
     title="All Stops"
     :rows="rows"
@@ -15,10 +14,10 @@
 
 <script setup>
 import { ref } from 'vue';
+import ViewOptionBar from 'src/components/bars/ViewOptionBar.vue';
 
 
 const columns = [
-  { name: '_id', label: '_id', field: '_id', align: 'left', sortable: true },
   { name: 'name', label: 'Name', field: 'name', align: 'left', sortable: true },
   { name: 'location', label: 'Location', field: 'locations', align: 'left', sortable: true }
 ]

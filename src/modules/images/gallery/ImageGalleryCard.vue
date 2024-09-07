@@ -1,17 +1,11 @@
 <template>
 <div style="display: inline-block;">
-    <q-card class="my-card" @click="editDialog = true">
-        <q-card-section>
-            <div class="text-subtitle2 ellipsis">{{ name }}</div>
-        </q-card-section>
-
-        <q-img :src="'/image_files/'+path"
-            spinner-color="blue" />
-
-        <q-card-section>
-            <q-chip v-for="tag in tags" :key="tag">{{ tag }}</q-chip>
-        </q-card-section>
-    </q-card>
+    <ImageCard 
+        :name="name"
+        :path="path"
+        :tags="tags"
+        @click="editDialog = true"
+        />
 
     <ImageGalleryCardEditDialog 
         v-model="editDialog"
@@ -26,6 +20,7 @@
 
 <script setup>
 import {ref} from 'vue'
+import ImageCard from '../ImageCard.vue';
 import ImageGalleryCardEditDialog from './_ImageGalleryCardEditDialog.vue';
 
 defineProps({
@@ -38,10 +33,3 @@ defineEmits(['onupdate', 'onremove'])
 
 const editDialog = ref(null)
 </script>
-
-<style lang="scss">
-.my-card {
-  width: 100%;
-  max-width: 250px;
-}
-</style>

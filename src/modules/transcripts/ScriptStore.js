@@ -8,7 +8,8 @@ const state = () => ({
     year: null,
     status: null,
 
-    text: null
+    text: null,
+    images: []
 })
 
 const getters = {
@@ -24,18 +25,32 @@ const actions = {
             this.year = null
             this.status = null
             this.text = null 
+            this.images = []
             return;
         }
         const data = await ScriptData.getOne(ACTIVE_ID)
-        console.log(data)
+        Object.assign(this, data)
     },
-    async save(){
+    async add(){
+        return await ScriptData.add({
+            name: this.name,
+            year: this.year,
+            status: this.status,
+            text: this.text,
+            images: JSON.parse(JSON.stringify(this.images))
+        })
+    },
+    async update(){
         await ScriptData.update(this.ACTIVE_ID, {
             name: this.name,
             year: this.year,
             status: this.status,
-            text: this.text
+            text: this.text,
+            images: JSON.parse(JSON.stringify(this.images))
         })
+    },
+    async remove(){
+        await ScriptData.remove(this.ACTIVE_ID)
     }
 }
 

@@ -1,5 +1,11 @@
 <template>
-<q-page class="q-pa-lg">
+  <EditPageWrapper
+  name="Stop"
+  :store="store"
+  :routeData="routeData"
+  :linksList="linksList"
+/>
+<!-- <q-page class="q-pa-lg">
   <LabelWrapper name="_id">
     <q-input class="col" filled v-model="form._id" />
   </LabelWrapper>
@@ -55,67 +61,81 @@
       <q-btn label="Submit" color="primary" @click="submit" />
     </div>
   </div>
-</q-page>
+</q-page> -->
 </template>
 
-<script>
-  import SelectMediaWrapper from 'components/SelectMediaWrapper.vue'
-  import LabelWrapper from 'src/components/wrappers/LabelWrapper.vue'
-  import { QuillEditor } from '@vueup/vue-quill'
-  import '@vueup/vue-quill/dist/vue-quill.snow.css';
-export default {
-  components: {
-    SelectMediaWrapper,
-    LabelWrapper,
-    QuillEditor
-  },
-  data(){
-    return {
-      stopId: null,
-      locationOptions: [],
+<script setup>
+  import { useStopStore } from 'src/modules/stops/StopStore';
+  import EditPageWrapper from 'src/components/wrappers/EditPageWrapper.vue';
 
 
-      form: {
-        _id: `${new Date().getTime()}TEST`,
-        name: 'WABABA',
-        locations: [],
-        audio_files: [],
-        image_files: [],
-        transcript: null,
-        sources: null
-      },
-    }
-  },
-  methods: {
-    submit(){
-      const path = this.stopId === 'NEW'? `/management/stops`
-        : `/management/stops/${this.stopId}`
-
-      this.$api.post(path, this.form)
-      .then(v => this.$router.go(-1))
-      .catch(err => this.$root.$error(err))        
-    },
-    remove(){
-      this.$api.delete(`/management/stops/${this.stopId}`)
-      .then(v => this.$router.go(-1) )
-      .catch(err => this.$root.$error(err))      
-    }
-  },
-  mounted(){
-    this.stopId = this.$route.params.stop_id
-
-    // Select options
-    this.$api.get(`/management/locations`)
-      .then(v => this.locationOptions = v.data)
-      .catch(err => this.$root.$error(err))
-
-    // Editing View
-    if(this.stopId === 'NEW') return;
-    this.$api.get(`/management/stops/${this.stopId}`)
-      .then(v => this.form = v.data)
-      .catch(err => this.$root.$error(err))
+  const store = useStopStore()
+  const routeData = {
+    param_id: 'stop_id',
+    back_root: 'stops'
   }
-}
+
+  const linksList = [{
+    title: 'Home'
+  }, {
+    title: 'Images'
+  }, {
+    title: 'Audio'
+  }]
+
+// export default {
+//   components: {
+//     SelectMediaWrapper,
+//     LabelWrapper,
+//     QuillEditor
+//   },
+//   data(){
+//     return {
+//       stopId: null,
+//       locationOptions: [],
+
+
+//       form: {
+//         _id: `${new Date().getTime()}TEST`,
+//         name: 'WABABA',
+//         locations: [],
+//         audio_files: [],
+//         image_files: [],
+//         transcript: null,
+//         sources: null
+//       },
+//     }
+//   },
+//   methods: {
+//     submit(){
+//       const path = this.stopId === 'NEW'? `/management/stops`
+//         : `/management/stops/${this.stopId}`
+
+//       this.$api.post(path, this.form)
+//       .then(v => this.$router.go(-1))
+//       .catch(err => this.$root.$error(err))        
+//     },
+//     remove(){
+//       this.$api.delete(`/management/stops/${this.stopId}`)
+//       .then(v => this.$router.go(-1) )
+//       .catch(err => this.$root.$error(err))      
+//     }
+//   },
+//   mounted(){
+//     this.stopId = this.$route.params.stop_id
+
+//     // Select options
+//     this.$api.get(`/management/locations`)
+//       .then(v => this.locationOptions = v.data)
+//       .catch(err => this.$root.$error(err))
+
+//     // Editing View
+//     if(this.stopId === 'NEW') return;
+//     this.$api.get(`/management/stops/${this.stopId}`)
+//       .then(v => this.form = v.data)
+//       .catch(err => this.$root.$error(err))
+//   }
+// }
 
 
 function _unpackFiles(files){

@@ -3,7 +3,6 @@
   <div v-if="image" class="col row">
     <q-img
       v-for="img in modelValue" :key="img"
-      :src="getImageUrl(img)"
       spinner-color="white"
       style="height: 140px; max-width: 150px"
     />
@@ -16,29 +15,14 @@
       </q-card-section>
     </q-card>
   </div>
-  <UploaderDialog
-    :image="image"
-    :uploadTarget="uploadTarget"
-    :modelValue="modelValue"
-    @update:modelValue="v => $emit('update:modelValue', v)" />
 </div>
 </template>
 
-<script>
-  import UploaderDialog from './_UploaderDialog.vue'
-export default {
-  props: {
-    modelValue: Array,
-    uploadTarget: String,
-    image: Boolean
-  },
-  components: {
-    UploaderDialog
-  },
-  methods: {
-    getImageUrl(filename){
-      return `${this.$api.defaults.baseURL}/public/images/${filename}`
-    }
-  }
-}
+<script setup>
+defineProps({
+  modelValue: Array,
+  uploadTarget: String,
+  image: Boolean
+})
+
 </script>

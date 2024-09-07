@@ -1,10 +1,6 @@
 <template>
 <div class="row justify-between q-ma-md">
-    <q-input filled :model-value="filter" label="Filter">
-        <template v-slot:prepend>
-        <q-icon name="search" />
-        </template>
-    </q-input>
+    <FilterInput :filter="filter" />
     <div>
         <q-btn 
             v-if="addlink" 
@@ -16,6 +12,8 @@
 </template>
 
 <script setup>
+import FilterInput from '../forms/FilterInput.vue';
+
 const props = defineProps({
     filter: String,
     addlink: Object

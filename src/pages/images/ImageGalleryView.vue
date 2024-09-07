@@ -33,10 +33,11 @@ import {ref} from 'vue'
 import { NotifyService } from 'src/services';
 import { Database } from 'src/db/db';
 import EmptyContentBlock from 'src/components/space_holders/EmptyContentBlock.vue';
-import ImageGalleryCard from 'src/modules/images/ImageGalleryCard.vue';
-import ImageAddGalleryInput from '../../modules/images/ImageAddGalleryInput.vue';
+import ImageGalleryCard from 'src/modules/images/gallery/ImageGalleryCard.vue';
+import ImageAddGalleryInput from '../../modules/images/gallery/ImageAddGalleryInput.vue';
 
 const Images = new Database('image_files')
+const message = new NotifyService('Image')
 
 const filter = ref(null)
 const gallery = ref([])
@@ -48,7 +49,7 @@ function init(){
   .then(data => {
     gallery.value = data
   })
-  .catch(e => NotifyService.error(e))
+  .catch(e => message.error(e))
 }
 
 function updateGalleryItem(item, nu){
