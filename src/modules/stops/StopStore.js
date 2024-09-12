@@ -16,16 +16,13 @@ const actions = {
         this.ACTIVE_ID = ACTIVE_ID
         if(ACTIVE_ID === 'NEW'){
             // Create "Empty page"
-            
+            const nuid = await StopData.add()
+            this.ACTIVE_ID = nuid
+            onadd(nuid)
             return;
         }
         const data = await StopData.getOne(ACTIVE_ID)
         Object.assign(this, data)
-    },
-    async add(){
-        return await StopData.add({
-            
-        })
     },
     async update(){
         await StopData.update(this.ACTIVE_ID, {

@@ -46,11 +46,9 @@
         </q-card-section>
 
         <q-card-actions>
-            <q-btn flat label="Remove" icon="delete" color="red" v-close-popup
-              @click="removeImage(_id)" />
+            <RemoveButton v-close-popup @click="removeImage(_id)" />
             <q-space />
-            <q-btn flat label="Save" icon="save" color="primary" v-close-popup
-              @click="saveImage(_id)" />
+            <SaveButton v-close-popup @click="saveImage(_id)" />
         </q-card-actions>
     </q-card>
 </q-dialog>
@@ -61,6 +59,8 @@ import {ref} from 'vue'
 import _ from 'lodash'
 import { Database } from 'src/db/db';
 import { NotifyService } from 'src/services';
+import SaveButton from 'src/components/buttons/SaveButton.vue';
+import RemoveButton from 'src/components/buttons/RemoveButton.vue';
 
 const props = defineProps({
     modelValue: Boolean,

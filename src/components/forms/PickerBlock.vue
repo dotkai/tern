@@ -7,7 +7,7 @@
       />
     <q-btn color="primary" class="col-1" icon="arrow_downward" @click="addStop(pendingStop)" />
     <q-btn class="col-1" icon="add" 
-      @click="$router.push(addRoute)" />
+      @click="navstore.stashReturn($router, $route, addRoute)" />
   </div>
   <SortList 
     :modelValue="modelValue"
@@ -18,9 +18,10 @@
 </template>
 
 <script setup>
+  import { ref, computed } from 'vue';
   import SortList from './SortList.vue'
   import SelectItem from './SelectItem.vue'
-  import { ref, computed } from 'vue';
+import { useNavigationStore } from 'src/modules/navigation/NavigationStore';
 
   const props = defineProps({
   	modelValue: Array,
@@ -28,6 +29,7 @@
   	addRoute: Object
   })
 	const emits = defineEmits(['update:modelValue'])
+  const navstore = useNavigationStore()
 
 	const pendingStop = ref(null)
 
@@ -38,9 +40,9 @@
       })
     })
 
-  function addStop(v){
-  	if(!v) return;
-  	emits('update:modelValue', [...props.modelValue || [], v._id])
+  function addStop(pendingStopId){
+  	if(!pendingStopId) return;
+  	emits('update:modelValue', [...props.modelValue || [], pendingStopId])
     pendingStop.value = null
   }
 

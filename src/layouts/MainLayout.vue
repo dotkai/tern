@@ -62,6 +62,7 @@
           v-for="link in linksList"
           :key="link.title"
           v-bind="link"
+          @click="navstore.clearReturn"
         >
           <q-item-section
             v-if="link.icon"
@@ -86,13 +87,13 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useQuasar } from 'quasar'
+import { useNavigationStore } from 'src/modules/navigation/NavigationStore'
 
 defineOptions({
   name: 'MainLayout'
 })
 
-const $q = useQuasar()
+const navstore = useNavigationStore()
 const linksList = [
   {
     title: 'Tours',
@@ -116,13 +117,8 @@ const linksList = [
 ]
 
 const leftDrawerOpen = ref(false)
-const passcode = ref('rMbpL@-t7s2jHodHNb$x%xzt7QoIy9|jW5AQZol&')
 
 function toggleLeftDrawer () {
   leftDrawerOpen.value = !leftDrawerOpen.value
-}
-
-function setCookie(){
-  $q.cookies.set('passcode', passcode)
 }
 </script>

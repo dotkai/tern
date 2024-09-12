@@ -9,7 +9,9 @@ const state = () => ({
     status: null,
 
     text: null,
-    images: []
+    location: [],
+    images: [],
+    notes: []
 })
 
 const getters = {
@@ -17,28 +19,17 @@ const getters = {
 }
 
 const actions = {
-    async init(ACTIVE_ID){
+    async init(ACTIVE_ID, onadd){
         this.ACTIVE_ID = ACTIVE_ID
         if(ACTIVE_ID === 'NEW'){
             // Create "Empty page"
-            this.name = null
-            this.year = null
-            this.status = null
-            this.text = null 
-            this.images = []
+            const nuid = await ScriptData.add()
+            this.ACTIVE_ID = nuid
+            onadd(nuid)
             return;
         }
         const data = await ScriptData.getOne(ACTIVE_ID)
         Object.assign(this, data)
-    },
-    async add(){
-        return await ScriptData.add({
-            name: this.name,
-            year: this.year,
-            status: this.status,
-            text: this.text,
-            images: JSON.parse(JSON.stringify(this.images))
-        })
     },
     async update(){
         await ScriptData.update(this.ACTIVE_ID, {
@@ -46,6 +37,8 @@ const actions = {
             year: this.year,
             status: this.status,
             text: this.text,
+            location: JSON.parse(JSON.stringify(this.images)),
+            notes: JSON.parse(JSON.stringify(this.images)),
             images: JSON.parse(JSON.stringify(this.images))
         })
     },

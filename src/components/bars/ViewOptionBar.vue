@@ -6,16 +6,18 @@
             v-if="addlink" 
             outline
             label="Add" icon="add" color="blue" 
-            :to="addlink" />
+            @click="navstore.stashReturn($router, $route, addlink)" />
     </div>
 </div>
 </template>
 
 <script setup>
 import FilterInput from '../forms/FilterInput.vue';
+import { useNavigationStore } from 'src/modules/navigation/NavigationStore';
 
 const props = defineProps({
     filter: String,
     addlink: Object
 })
+const navstore = useNavigationStore()
 </script>

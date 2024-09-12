@@ -12,3 +12,12 @@ const props = defineProps({
 })
 const emits = defineEmits(['update:text'])
 </script>
+
+<style>
+.ql-snow .ql-editor h1 {
+    line-height: 2em;
+}
+.ql-snow .ql-editor h2 {
+    line-height: 1.5em;
+}
+</style>

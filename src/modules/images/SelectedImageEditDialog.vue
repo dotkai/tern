@@ -22,12 +22,10 @@
         </q-card-section>
 
         <q-card-actions>
-            <q-btn flat label="Remove" icon="delete" color="red" v-close-popup
-                @click="removeImage" />
+            <RemoveButton v-close-popup @click="removeImage" />
             <q-space />
-            <q-btn flat label="Cancel" v-close-popup />
-            <q-btn flat label="Save" icon="save" color="primary" v-close-popup
-                @click="updateImage" />
+            <CancelButton v-close-popup />
+            <SaveButton v-close-popup @click="updateImage" />
         </q-card-actions>
     </div>
 </MaxMinDialogWrapper>
@@ -37,6 +35,9 @@
 import {ref, watch} from 'vue'
 import _ from 'lodash'
 import MaxMinDialogWrapper from 'src/components/wrappers/MaxMinDialogWrapper.vue';
+import SaveButton from 'src/components/buttons/SaveButton.vue';
+import CancelButton from 'src/components/buttons/CancelButton.vue';
+import RemoveButton from 'src/components/buttons/RemoveButton.vue';
 
 const props = defineProps({
     modelValue: Boolean,

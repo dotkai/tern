@@ -14,7 +14,10 @@
 
 <script setup>
 import ViewOptionBar from 'src/components/bars/ViewOptionBar.vue';
+import { Database } from 'src/db/db';
 import { ref } from 'vue';
+
+const ScriptData = new Database('transcripts')
 
 const columns = [
   { name: 'name', label: 'Name', field: 'name', align: 'left', sortable: true },
@@ -24,11 +27,15 @@ const columns = [
 const rows = ref([])
 
 
-//   mounted(){
-//     this.$api.get(`/management/scripts`)
-//       .then(v => this.rows = v.data)
-//       .catch(err => this.$root.$error(err))
-//   }
-// }
+init()
+
+async function init(){
+  try{
+    const data = await ScriptData.getAll()
+    rows.value = data
+  } catch(e){
+    message.error(e)
+  }
+}
 
 </script>

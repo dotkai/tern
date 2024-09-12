@@ -2,12 +2,13 @@
 <div>
     <q-toolbar class="justify-between">
         <div style="display: flex;align-items: center;">
-            <q-btn label="Back" icon="chevron_left" flat :to="returnto" />
+            <q-btn label="Back" icon="chevron_left" flat 
+              @click="NavigationStore.popReturn($router, returnto)" />
             <span style="margin: 0 10px;">|</span>
             <span class="text-h6">{{pageName}}</span>
         </div>
         <div class="row">
-            <RemoveButton class="q-mx-md" @click="confirm = true" />
+            <RemoveCollapseButton class="q-mx-md" @click="confirm = true" />
             <q-btn 
                 unelevated label="Save" 
                 icon="save" color="blue" @click="$emit('submit')" />
@@ -38,14 +39,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import RemoveButton from '../buttons/RemoveButton.vue';
+import { computed, ref } from 'vue';
+import RemoveCollapseButton from '../buttons/RemoveCollapseButton.vue';
+import { useNavigationStore } from 'src/modules/navigation/NavigationStore';
+
 const props = defineProps({
     pageName: String,
-    returnto: Object,
-    inu: Boolean
+    returnto: Object
 })
 const emits = defineEmits(['submit', 'remove'])
+const NavigationStore = useNavigationStore()
 
 const confirm = ref(null)
 </script>

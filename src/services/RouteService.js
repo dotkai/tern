@@ -25,4 +25,21 @@ export class RouteService {
     back(){
         this.router.push({ name: this.back_root })
     }
+    setBackTargetQuery(gotoRoute){
+        const target = {
+            ...gotoRoute,
+            query: {
+                returnRoute: JSON.stringify({
+                    name: this.route.name,
+                    params: {
+                        [this.param_id]: this.route.params[this.param_id]
+                    }
+                })
+            }
+        }
+        this.router.push(target)
+    }
+    getBackTarget(){
+        return { name: this.back_root }
+    }
 }

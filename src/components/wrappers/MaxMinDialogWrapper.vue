@@ -1,5 +1,6 @@
 <template>
 <q-dialog 
+    persistent
     :modelValue="modelValue" 
     @update:model-value="$emit('update:model-value')" 
     class="maxmin-dialog"

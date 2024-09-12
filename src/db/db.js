@@ -63,10 +63,6 @@ db.version(2).stores({
         location,
         images,
         audio_files`,
-
-    transcript_notes: `++_id,
-      transcript_id,
-      text`,
     
     locations: `++_id,
       name,

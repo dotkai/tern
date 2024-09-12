@@ -1,7 +1,7 @@
 <template>
 <q-page class="column">
   <EditMenuBar :pageName="`Edit ${name}`" 
-    :returnto="{ name: routeData.back_root }"
+    :returnto="route.getBackTarget()"
     @submit="submit"
     @remove="confirmRemove" />
   
@@ -31,18 +31,12 @@
   const route = new RouteService(props.routeData)
   const message = new NotifyService(props.name)
 
-  props.store.init(route.getEditId())
+  props.store.init(route.getEditId(), nuid => route.upid(nuid))
 
   async function submit(){
     try {
-      if(!route.isnu()){
-        await props.store.update()
-        message.update(store.name)
-        return;
-      }
-      const nuid = await props.store.add()
-      message.add(props.store.name)
-      route.upid(nuid)
+      await props.store.update()
+      message.update(props.store.name)
     } catch(e){
       message.error(e)
     }
@@ -51,7 +45,7 @@
   async function confirmRemove(){
     try {
       await props.store.remove()
-      message.remove(props.store.name)
+      message.remove(props.store.name || '(Unnamed)')
       route.back()
     } catch(e){
       message.error(e)
