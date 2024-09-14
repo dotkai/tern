@@ -27,10 +27,10 @@ export class Database {
   async add(data){
     const NUID = nanoid()
 		await db[this.dbname].add({
-			_id: data._id || NUID,
+			_id: data?._id || NUID,
 			...data
 		})
-    return data._id || NUID
+    return data?._id || NUID
 	}
   async update(id, data){
     return db[this.dbname].update(id, data)
@@ -55,10 +55,8 @@ db.version(2).stores({
     stories: `++_id,
         name,
         locations,
-        audio_files,
-        image_files,
-        transcript,
-        sources`,
+        images,
+        transcript`,
 
     transcripts: `++_id,
         name,

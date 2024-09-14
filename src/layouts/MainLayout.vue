@@ -29,14 +29,14 @@
           <q-menu>
             <q-list style="min-width: 100px">
               <q-item clickable v-close-popup>
-                <q-item-section>New tab</q-item-section>
+                <q-item-section>Export</q-item-section>
               </q-item>
               <q-item clickable v-close-popup>
-                <q-item-section>New incognito tab</q-item-section>
+                <q-item-section>Backup</q-item-section>
               </q-item>
               <q-separator />
               <q-item clickable v-close-popup>
-                <q-item-section>Recent tabs</q-item-section>
+                <q-item-section>Settings</q-item-section>
               </q-item>
             </q-list>
           </q-menu>
@@ -57,9 +57,30 @@
         </q-item-label>
 
         <q-separator/>
+        <q-item-label header overline>Content</q-item-label>
 
         <q-item
           v-for="link in linksList"
+          :key="link.title"
+          v-bind="link"
+          @click="navstore.clearReturn"
+        >
+          <q-item-section
+            v-if="link.icon"
+            avatar
+          >
+            <q-icon :name="link.icon" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>{{ link.title }}</q-item-label>
+          </q-item-section>
+        </q-item>
+        
+        <q-separator/>
+        <q-item-label header overline>Mangement</q-item-label>
+        <q-item
+          v-for="link in mangeList"
           :key="link.title"
           v-bind="link"
           @click="navstore.clearReturn"
@@ -97,21 +118,33 @@ const navstore = useNavigationStore()
 const linksList = [
   {
     title: 'Tours',
+    icon: 'tour',
     to: { name: 'home' }
   }, {
     title: 'Tour Stops',
+    icon: 'history_edu',
     to: { name: 'stops' }
   }, {
     title: 'Scripts',
+    icon: 'edit_note',
     to: { name: 'scripts' }
   }, {
     title: 'Locations',
+    icon: 'pin_drop',
     to: { name: 'location' }
-  }, {
-    title: 'Images',
+  }]
+  
+const mangeList = [{
+    title: 'Image Files',
+    icon: 'image',
     to: { name: 'images' }
   }, {
+    title: 'Audio Files',
+    icon: 'mic',
+    to: { name: 'audio' }
+  }, {
     title: 'Tag Groups',
+    icon: 'label',
     to: { name: 'groups' }
   }
 ]

@@ -15,7 +15,9 @@
 <script setup>
 import { ref } from 'vue';
 import ViewOptionBar from 'src/components/bars/ViewOptionBar.vue';
+import { Database } from 'src/db/db';
 
+const StoryData = new Database('stories')
 
 const columns = [
   { name: 'name', label: 'Name', field: 'name', align: 'left', sortable: true },
@@ -23,10 +25,15 @@ const columns = [
 ]
 const rows = ref([])
 
-  // mounted(){
-  //   this.$api.get(`/management/stops`)
-  //     .then(v => this.rows = v.data)
-  //     .catch(err => this.$root.$error(err))
-  // }
+init()
+
+async function init(){
+  try{
+    const data = await StoryData.getAll()
+    rows.value = data
+  } catch(e){
+    message.error(e)
+  }
+}
 
 </script>
