@@ -31,7 +31,7 @@ const fileAdd = ref(null)
 async function uploadImage(){
   // Transfer images to filesystem
   const promise = fileAdd.value.map(file => {
-    return fs.copyImage(file, nanoid())
+    return fs.copyFile(file, nanoid(), 'image_files')
   })
 
   const results = await Promise.all(promise)
@@ -39,13 +39,14 @@ async function uploadImage(){
     return Images.add({
       _id: item.generatedId,
       name: item.originalName,
-      path: item.imageFileName,
+      path: item.savedName,
       tags: []
     })
   })
   await Promise.all(dbcontent)
-    .then(_ => {
-        props.postupload()
+    .then(idList => {
+      console.log(dbcontent, idList)
+        props.postupload(idList)
         fileAdd.value = null
     })
     .catch(e => NotifyService.error(e))

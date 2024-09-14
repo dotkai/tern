@@ -6,6 +6,7 @@
         <q-card-section class="row">
             <div class="col q-pa-md">
                 <q-img 
+                    error-src="util_images/noimage.png"
                     spinner-color="blue" 
                     class="display-image" :src="'/image_files/'+path"/>
             </div>

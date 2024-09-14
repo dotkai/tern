@@ -34,10 +34,10 @@ import { useNavigationStore } from 'src/modules/navigation/NavigationStore';
 	const pendingStop = ref(null)
 
   const displayStopList = computed(() => {
-      if(!props.modelValue) return true
+      if(!props.modelValue || !props.stopOptionList) return []
       return props.modelValue.map(key => {
         return props.stopOptionList.find(v => key === v._id)
-      })
+      }).filter(v => v)
     })
 
   function addStop(pendingStopId){

@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@electron/remote": "^2.1.2",
+    "@liripeng/vue-audio-player": "^2.0.4",
     "@quasar/extras": "^1.16.12",
     "@vueup/vue-quill": "^1.2.0",
     "axios": "^1.2.1",
@@ -23,7 +24,8 @@
     "pinia": "^2.2.2",
     "quasar": "^2.8.0",
     "vue": "^3.4.18",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.12",
+    "wavesurfer.js": "^7.8.6"
   },
   "devDependencies": {
     "@quasar/app-vite": "^1.8.0",

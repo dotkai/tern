@@ -11,6 +11,7 @@ const state = () => ({
     text: null,
     location: [],
     images: [],
+    audio: [],
     notes: []
 })
 
@@ -37,9 +38,10 @@ const actions = {
             year: this.year,
             status: this.status,
             text: this.text,
-            location: JSON.parse(JSON.stringify(this.images)),
-            notes: JSON.parse(JSON.stringify(this.images)),
-            images: JSON.parse(JSON.stringify(this.images))
+            location: JSON.parse(JSON.stringify(this.location)),
+            notes: JSON.parse(JSON.stringify(this.notes)),
+            images: JSON.parse(JSON.stringify(this.images)),
+            audio: JSON.parse(JSON.stringify(this.audio))
         })
     },
     async remove(){

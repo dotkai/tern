@@ -58,6 +58,7 @@
                 <q-img
                   v-if="image"
                   :src="getImageUrl(content)"
+                  error-src="util_images/noimage.png"
                   spinner-color="white"
                   style="height: 140px; max-width: 150px"
                   class="q-mr-md"

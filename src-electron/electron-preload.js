@@ -34,25 +34,25 @@ import fs from 'fs'
 
 contextBridge.exposeInMainWorld('electronFs', {
     // copyFile: fs.copyFile,
-  copyImage: async (image, generatedId) => {
+  copyFile: async (image, generatedId, targetFolder) => {
     try{  
       const source = webUtils.getPathForFile(image)
-      const publicFolder = path.resolve(__dirname, process.env.QUASAR_PUBLIC_FOLDER, 'image_files') 
+      const publicFolder = path.resolve(__dirname, process.env.QUASAR_PUBLIC_FOLDER, targetFolder) 
       const extension = image.name.split('.').pop();
-      const imageFileName = `${generatedId}.${extension}`
-      fs.copyFileSync(source, path.join(publicFolder, imageFileName))
+      const savedName = `${generatedId}.${extension}`
+      fs.copyFileSync(source, path.join(publicFolder, savedName))
       return {
         generatedId,
         originalName: image.name,
-        imageFileName
+        savedName
       }
     } catch(e){
       console.log(e)
     }
   },
-  removeImage: async (filePath) => {
+  removeFile: async (filePath, publicLocation) => {
     try {
-      const publicFolder = path.resolve(__dirname, process.env.QUASAR_PUBLIC_FOLDER, 'image_files')
+      const publicFolder = path.resolve(__dirname, process.env.QUASAR_PUBLIC_FOLDER, publicLocation)
       fs.unlinkSync(path.join(publicFolder, filePath));
     } catch(e){
       console.log(e)

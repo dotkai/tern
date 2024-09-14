@@ -24,6 +24,7 @@
             <div class="col q-pa-md">
                 <q-img 
                   spinner-color="blue" 
+                  error-src="util_images/noimage.png"
                   class="display-image" :src="'/image_files/'+path"/>
             </div>
             <q-separator vertical inset />
@@ -146,7 +147,7 @@ async function saveImage(_id){
 async function removeImage(_id){
   try {
     await ImageDatabase.remove(_id)
-    await fs.removeImage(props.path)
+    await fs.removeFile(props.path, 'image_files')
     emit('onremove', _id)
     message.update('Removed')
   } catch(e){

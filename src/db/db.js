@@ -18,13 +18,19 @@ export class Database {
   async getOne(_id){
     return db[this.dbname].get(_id)
   }
-  async add(data, customId){
+  async getSet(idList){
+    const test = await db[this.dbname].get(idList[0])
+    const all = await db[this.dbname].toArray()
+    console.log(test, all)
+    return db[this.dbname].bulkGet(idList)
+  }
+  async add(data){
     const NUID = nanoid()
 		await db[this.dbname].add({
-			_id: NUID,
+			_id: data._id || NUID,
 			...data
 		})
-    return NUID
+    return data._id || NUID
 	}
   async update(id, data){
     return db[this.dbname].update(id, data)
@@ -61,8 +67,9 @@ db.version(2).stores({
         sources,
         status,
         location,
+        notes,
         images,
-        audio_files`,
+        audio`,
     
     locations: `++_id,
       name,
@@ -80,7 +87,11 @@ db.version(2).stores({
     image_files: `++_id,
       name,
       path,
-      tags`
+      tags`,
+
+    audio_files: `++_id,
+      name,
+      path`
 });
 
 db.open().then(function (db) {

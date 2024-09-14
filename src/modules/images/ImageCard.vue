@@ -1,6 +1,7 @@
 <template>
 <q-card class="my-card">
-    <q-img :src="'/image_files/'+path"
+    <q-img :src="'image_files/'+path"
+        error-src="util_images/noimage.png"
         spinner-color="blue" />
 
     <div class="text-subtitle2 ellipsis q-pa-sm">{{ name }}</div>

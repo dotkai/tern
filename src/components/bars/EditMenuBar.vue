@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted, onUnmounted  } from 'vue';
 import RemoveCollapseButton from '../buttons/RemoveCollapseButton.vue';
 import { useNavigationStore } from 'src/modules/navigation/NavigationStore';
 
@@ -51,4 +51,21 @@ const emits = defineEmits(['submit', 'remove'])
 const NavigationStore = useNavigationStore()
 
 const confirm = ref(null)
+
+onMounted(() => {
+  document.addEventListener("keydown", doSave);
+})
+
+onUnmounted(() => {
+  document.removeEventListener("keydown", doSave);
+})
+
+function doSave(e) {
+  if (!(e.keyCode === 83 && (e.ctrlKey || e.metaKey))) {
+    return;
+  }
+
+  e.preventDefault();
+  emits('submit')
+}
 </script>

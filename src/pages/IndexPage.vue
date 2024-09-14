@@ -11,7 +11,8 @@
       v-for="row in rows"
       :key="row._id"
       @click="$router.push({ name: 'edit_tour', params: { tour_id: row._id } })">
-      <q-img :src="row.imgsrc">
+      <q-img :src="row.imgsrc" 
+        error-src="util_images/noimage.png">
         <div class="absolute-bottom text-h6">
           {{row.title}}
         </div>

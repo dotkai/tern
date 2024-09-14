@@ -17,6 +17,7 @@
     </div>
     <q-separator class="q-my-md" />
 
+    <EmptyContentBlock v-if="!store.notes.length" label="No Notes" icon="note" />
     <NoteCard v-for="note in store.notes" :key="note.created"
         :updated="note.updated"
         :text="note.text"
@@ -29,6 +30,7 @@
 import FilterInput from 'src/components/forms/FilterInput.vue';
 import NoteCard from 'src/modules/transcripts/NoteCard.vue';
 import NoteEditDialog from 'src/modules/transcripts/NoteEditDialog.vue';
+import EmptyContentBlock from 'src/components/space_holders/EmptyContentBlock.vue';
 import { useScriptStore } from 'src/modules/transcripts/ScriptStore';
 import { ref } from 'vue';
 

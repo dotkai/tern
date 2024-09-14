@@ -4,6 +4,7 @@
     <q-img
       v-for="img in modelValue" :key="img"
       spinner-color="white"
+      error-src="util_images/noimage.png"
       style="height: 140px; max-width: 150px"
     />
   </div>

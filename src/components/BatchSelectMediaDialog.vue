@@ -36,8 +36,8 @@ const props = defineProps({
 
 const dialog = ref(false)
 const label = computed(_ => {
-    if(props.type === 'image') return 'Add Image'
-    return 'Add'
+    if(props.type === 'image') return 'Browse Gallery'
+    return 'Browse'
 })
 const icon = computed(_ => {
     if(props.type === 'image') return 'add_photo_alternate'

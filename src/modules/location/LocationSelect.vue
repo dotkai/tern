@@ -19,7 +19,10 @@ defineEmits(['update:model-value'])
 const LocationData = new Database('locations')
 const locationList = ref([])
 
-LocationData.getAll()
-.then(data => locationList.value = data)
+init()
 
+async function init(){
+    const data = await LocationData.getAll()
+    locationList.value = data
+}
 </script>
