@@ -10,9 +10,16 @@
         <div class="row">
             <RemoveCollapseButton class="q-mx-md" @click="confirm = true" />
             <q-btn 
-                unelevated label="Save" 
-                icon="save" color="blue" @click="$emit('submit')" />
-
+                unelevated 
+                label="Save" 
+                icon="save" 
+                color="blue" 
+                @click="$emit('submit')" />
+            <!-- <q-btn
+              disabled
+              unelevated
+              icon="pending"
+              label="Saving..." /> -->
         </div>
     </q-toolbar>
     <q-separator />

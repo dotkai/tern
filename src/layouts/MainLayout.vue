@@ -122,7 +122,7 @@ const linksList = [
     to: { name: 'home' }
   }, {
     title: 'Tour Stops',
-    icon: 'history_edu',
+    icon: 'cottage',
     to: { name: 'stops' }
   }, {
     title: 'Scripts',

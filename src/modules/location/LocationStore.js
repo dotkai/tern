@@ -24,8 +24,14 @@ const actions = {
         if(ACTIVE_ID === 'NEW'){
             // Create "Empty page"
             const nuid = await LocationData.add()
-            this.ACTIVE_ID = nuid
-            onadd(nuid)
+            Object.assign(this, {
+                ...Object.keys(s).forEach((i) => {
+                    if(['images', 'tags'].includes(i)) return s[i] = []
+                    s[i] = null
+                }),
+                ACTIVE_ID: nuid
+            })
+            notify.add('New Location')
             return;
         }
         const data = await LocationData.getOne(ACTIVE_ID)

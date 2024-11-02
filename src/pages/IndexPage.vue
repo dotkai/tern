@@ -5,21 +5,22 @@
   
   <q-separator />
 
-  <section>
-    <EmptyContentBlock label="No Tours" icon="tour" />
-    <q-card class="my-card"
+  <EmptyContentBlock v-if="!rows.length" label="No Tours" icon="tour" />
+  <section class="row justify-around">
+    <q-card class="my-card col-5"
       v-for="row in rows"
       :key="row._id"
       @click="$router.push({ name: 'edit_tour', params: { tour_id: row._id } })">
-      <q-img :src="row.imgsrc" 
-        error-src="util_images/noimage.png">
-        <div class="absolute-bottom text-h6">
-          {{row.title}}
+      <div style="position: relative;">
+        <q-img :src="'/image_files/'+row.cover_image_path" 
+          height="250px"
+          error-src="util_images/noimage.png"></q-img>
+        <div class="card-title absolute-bottom text-h6">
+          {{row.title || '(No Name)'}}
         </div>
-      </q-img>
-
-      <q-card-section>
-        {{ row }}
+      </div>
+        
+      <q-card-section v-if="row.brief">
         {{row.brief}}
       </q-card-section>
     </q-card>
@@ -29,20 +30,35 @@
 
 <script setup>
   import {ref} from 'vue'
-  import {db} from 'src/db/db.js'
+  import {Database} from 'src/db/db.js'
   import ViewOptionBar from 'src/components/bars/ViewOptionBar.vue';
   import EmptyContentBlock from 'src/components/space_holders/EmptyContentBlock.vue';
+import { NotifyService } from 'src/services';
 
-  const filters = ref('')
-  const rows = []//await db.tours
+  const TourData = new Database('tours')
+  const message = new NotifyService()
+  const rows = ref([])
+
+  init()
+
+  async function init(){
+    try {
+      rows.value = await TourData.getAll()
+    } catch(e){
+      message.error(e)
+    }
+  }
 
 </script>
 
 <style>
 .my-card {
-  display: inline-block;
-  max-width: 250px;
   margin: 10px;
+}
+.my-card .card-title {
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 10px;
 }
 .my-card:hover {
   cursor: pointer;

@@ -20,13 +20,19 @@ const getters = {
 }
 
 const actions = {
-    async init(ACTIVE_ID, onadd){
+    async init(ACTIVE_ID, notify){
         this.ACTIVE_ID = ACTIVE_ID
         if(ACTIVE_ID === 'NEW'){
             // Create "Empty page"
             const nuid = await ScriptData.add()
-            this.ACTIVE_ID = nuid
-            onadd(nuid)
+            Object.assign(this, {
+                ...Object.keys(s).forEach((i) => {
+                    if(['location', 'audio', 'images', 'notes'].includes(i)) return s[i] = []
+                    s[i] = null
+                }),
+                ACTIVE_ID: nuid
+            })
+            notify.add('New Script')
             return;
         }
         const data = await ScriptData.getOne(ACTIVE_ID)

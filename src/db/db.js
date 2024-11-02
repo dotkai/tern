@@ -44,13 +44,14 @@ export class Database {
 
 db.version(2).stores({
   tours: `++_id, 
+    cover_image_path,
     title, 
-    active, 
-    image_files, 
+    active,  
     brief, 
     description,
-    stops,
-    tags`,
+    group,
+    tags,
+    stops`,
 
     stories: `++_id,
         name,

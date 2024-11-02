@@ -15,13 +15,19 @@ const getters = {
 }
 
 const actions = {
-    async init(ACTIVE_ID, onadd){
+    async init(ACTIVE_ID, notify){
         this.ACTIVE_ID = ACTIVE_ID
         if(ACTIVE_ID === 'NEW'){
             // Create "Empty page"
             const nuid = await StopData.add()
-            this.ACTIVE_ID = nuid
-            onadd(nuid)
+            Object.assign(this, {
+                ...Object.keys(s).forEach((i) => {
+                    if(['location', 'transcripts', 'images'].includes(i)) return s[i] = []
+                    s[i] = null
+                }),
+                ACTIVE_ID: nuid
+            })
+            notify.add('New Stop')
             return;
         }
         const data = await StopData.getOne(ACTIVE_ID)

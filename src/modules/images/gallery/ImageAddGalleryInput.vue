@@ -19,6 +19,7 @@
 import {ref} from 'vue'
 import { nanoid } from 'nanoid';
 import { Database } from 'src/db/db';
+import { NotifyService } from 'src/services';
 
 const props = defineProps({
     postupload: Function
@@ -26,6 +27,7 @@ const props = defineProps({
 
 const fs = window.electronFs
 const Images = new Database('image_files')
+const message = new NotifyService()
 const fileAdd = ref(null)
 
 async function uploadImage(){
@@ -45,11 +47,10 @@ async function uploadImage(){
   })
   await Promise.all(dbcontent)
     .then(idList => {
-      console.log(dbcontent, idList)
         props.postupload(idList)
         fileAdd.value = null
     })
-    .catch(e => NotifyService.error(e))
+    .catch(e => message.error(e))
 }
 
 </script>

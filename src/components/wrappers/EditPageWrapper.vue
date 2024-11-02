@@ -31,12 +31,14 @@
   const route = new RouteService(props.routeData)
   const message = new NotifyService(props.name)
 
-  props.store.init(route.getEditId(), nuid => route.upid(nuid))
+
+    console.log(props.store)
+  props.store.init(route.getEditId(), message)
 
   async function submit(){
     try {
       await props.store.update()
-      message.update(props.store.name)
+      message.update(props.store.name || '(Unnamed)')
     } catch(e){
       message.error(e)
     }
