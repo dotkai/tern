@@ -1,6 +1,7 @@
 <template>
 <div class="row col q-ml-md">      
     <q-file class="col" 
+    dense
     multiple 
     filled 
     clearable
@@ -28,7 +29,7 @@ const props = defineProps({
 const fs = window.electronFs
 const message = new NotifyService()
 const Audio = new Database('audio_files')
-const fileAdd = ref(null)
+const fileAdd = ref([])
 
 async function uploadAudio(){
     // Transfer images to filesystem

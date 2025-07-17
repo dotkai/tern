@@ -1,48 +1,62 @@
+import _ from 'lodash'
 import { defineStore } from 'pinia'
 import { Database } from 'src/db/db'
 
 const StopData = new Database('stories')
 
-const state = () => ({
-    name: null,
-    location: [],
-    transcripts: [],
-    images: []
-})
+const getBase = () => {
+    return {
+        name: '',
+        locations: [],
+        transcripts: [],
+        images: [],
+        tags: []
+    }
+}
+
+const state = () => (getBase())
 
 const getters = {
     
 }
 
 const actions = {
-    async init(ACTIVE_ID, notify){
-        this.ACTIVE_ID = ACTIVE_ID
+    async init(ACTIVE_ID){
         if(ACTIVE_ID === 'NEW'){
             // Create "Empty page"
-            const nuid = await StopData.add()
-            Object.assign(this, {
-                ...Object.keys(s).forEach((i) => {
-                    if(['location', 'transcripts', 'images'].includes(i)) return s[i] = []
-                    s[i] = null
-                }),
-                ACTIVE_ID: nuid
-            })
-            notify.add('New Stop')
+            Object.assign(this, getBase())
+            this.ACTIVE_ID = null;
             return;
         }
         const data = await StopData.getOne(ACTIVE_ID)
         Object.assign(this, data)
+        this.ACTIVE_ID = ACTIVE_ID;
     },
     async update(){
-        await StopData.update(this.ACTIVE_ID, {
-            name: this.name,
-            location: JSON.parse(JSON.stringify(this.location)),
-            transcripts: JSON.parse(JSON.stringify(this.transcripts)),
-            images: JSON.parse(JSON.stringify(this.images))
-        })
+        const data = {
+          name: this.name,
+          locations: JSON.parse(JSON.stringify(this.locations)),
+          transcripts: JSON.parse(JSON.stringify(this.transcripts)),
+          images: JSON.parse(JSON.stringify(this.images)),
+          tags: JSON.parse(JSON.stringify(this.tags))
+        }
+
+        // Already created
+        if(this.ACTIVE_ID) return StopData.update(this.ACTIVE_ID, data)
+        // Make new
+        const nuid = await StopData.add(data)
+        this.ACTIVE_ID = nuid;
     },
     async remove(){
         await StopData.remove(this.ACTIVE_ID)
+    },
+
+    addLocationAttachment(source){
+        this.images = _.unionBy(this.images, source.images, 'path')
+    },
+    addScriptAttachment(source){
+        this.images = _.unionBy(this.images, source.images, 'path')
+        this.locations = _.union(this.locations, source.locations)
     }
 }
 

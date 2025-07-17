@@ -2,7 +2,7 @@
 <div>
     <q-btn outline 
         color="primary"
-        :label="label" 
+        label="Browse" 
         :icon="icon"
         @click="dialog = true" />
 
@@ -35,13 +35,9 @@ const props = defineProps({
 })
 
 const dialog = ref(false)
-const label = computed(_ => {
-    if(props.type === 'image') return 'Browse Gallery'
-    return 'Browse'
-})
 const icon = computed(_ => {
     if(props.type === 'image') return 'add_photo_alternate'
-    return 'Add'
+    return 'add'
 })
 
     

@@ -13,26 +13,31 @@
         </div>
     </div>
     <q-card v-for="group in groupList" :key="group._id">
-        <div class="row ">
-            <div class="col-4 text-h6 row self-center q-px-md hover"
-                @click="$router.push({ name: 'edit_group', params: { group_id: group._id } })">
-                {{ group.name }}
-            </div>
-            <q-select class="col" 
-                label="Tags"
-                :model-value="dud"
-                :options="group.list"
-                option-value="_id"
-                option-label="name" />
-            <div class="col-1 row self-center q-px-md">
-                <q-btn 
-                    round
-                    flat
-                    icon="edit"
-                    color="blue"
-                    @click="$router.push({ name: 'edit_group', params: { group_id: group._id } })" />
-            </div>
+      <div
+        class="row items-center q-pa-sm hover"
+        @click="$router.push({ name: 'edit_group', params: { group_id: group._id } })"
+      >
+        <div class="col-4 text-subtitle-1 q-px-md">
+        {{ group.name }}
         </div>
+
+        <div
+        class="col"
+        @click.stop
+        >
+        <q-select
+            label="Tags"
+            :model-value="dud"
+            :options="group.list"
+            option-value="_id"
+            option-label="name"
+            dense
+            outlined
+            emit-value
+            map-options
+        />
+        </div>
+      </div>
     </q-card>
 </q-page>
 </template>

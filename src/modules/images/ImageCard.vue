@@ -21,7 +21,6 @@ defineProps({
 
 <style lang="scss">
 .my-card {
-  width: 100%;
-  max-width: 250px;
+  width: 200px;
 }
 </style>

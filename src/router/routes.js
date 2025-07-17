@@ -1,4 +1,5 @@
 import StopRoutes from 'src/pages/stops/routes'
+import AudioRoutes from 'src/pages/audio/routes'
 import ImageRoutes from 'src/pages/images/routes'
 import LocationRoutes from 'src/pages/location/routes.js'
 import ScriptRoutes from 'src/pages/transcript/routes'
@@ -23,6 +24,7 @@ const routes = [
           component: () => import('src/pages/tours/edit/TourStops.vue')
         }]
       },
+      ...AudioRoutes,
       ...StopRoutes,
       ...ImageRoutes,
       ...LocationRoutes,

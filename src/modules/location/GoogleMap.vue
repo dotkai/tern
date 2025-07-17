@@ -9,7 +9,6 @@
 </template>
 
 <script setup>
-import {computed} from 'vue'
 const props = defineProps({
     address: String,
     lat: [Number, String],
@@ -18,7 +17,7 @@ const props = defineProps({
 
 function openLocation(){
     const linkLocation = `http://maps.google.com/?q=${props.address}`
-    const latlong = `https://maps.google.com/?q=${props.lat},${props.long}`
-    window.open(props.lat && props.long? latlong : linkLocation )
+    const latlong = `https://maps.google.com/?q=${props.lat},${props.lon}`
+    window.open(props.lat && props.lon? latlong : linkLocation )
 }
 </script>

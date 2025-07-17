@@ -3,13 +3,23 @@
   name="Location"
   :store="store"
   :routeData="routeData"
-  :linksList="linksList"
-/>
+  :linksList="linksList">
+
+  <LocationMain />
+  
+  <template #helper="{ tab }">  
+    <component :is="getTabComponent(tab)" />
+  </template>
+</EditPageWrapper>
 </template>
 
 <script setup>
   import { useLocationStore } from 'src/modules/location/LocationStore';
   import EditPageWrapper from 'src/components/wrappers/EditPageWrapper.vue';
+
+  import LocationMain from 'src/pages/location/edit/LocationMain.vue'
+  import LocationMap from 'src/pages/location/edit/LocationMap.vue'
+  import LocationImage from 'src/pages/location/edit/LocationImage.vue'
 
   const store = useLocationStore()
   const routeData = {
@@ -18,11 +28,18 @@
   }
 
   const linksList = [{
-    title: 'Home',
-    to: { name: 'edit_location' }
-  }, {
+    title: 'Map',
+    icon: 'map'
+  },{
     title: 'Images',
-    to: { name: 'edit_location_images' }
+    icon: 'image'
   }]
 
+function getTabComponent(tab) {
+  switch (tab) {
+    case 'Map': return LocationMap
+    case 'Images': return LocationImage
+    default: return null
+  }
+}
 </script>

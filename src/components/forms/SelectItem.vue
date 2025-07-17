@@ -2,11 +2,12 @@
 <q-select class="col" 
   clearable
   filled 
+  dense
   :multiple="multiple"
   :use-chips="multiple"
   :label="label"
 	:model-value="selected"
-	@update:model-value="v => $emit('update:selected', v)" 
+	@update:model-value="v => setValue(v)" 
   @clear="$emit('clear')"
   :options="displayOptionList"
   option-value="_id" 
@@ -17,6 +18,9 @@
   input-debounce="0"
   behavior="dialog"
   @filter="filterFn">
+  <template v-if="icon" v-slot:prepend>
+    <q-icon :name="icon" />
+  </template>
   <template v-slot:no-option>
       <q-item>
         <q-item-section class="text-grey">
@@ -32,31 +36,32 @@
 
   const props = defineProps({
     label: String,
+    icon: String,
   	selected: [String, Array],
   	options: Array,
     multiple: Boolean
   })
-	const emits = defineEmits(['update:selected', 'clear'])
+	const emits = defineEmits(['update:selected', 'clear', 'onset'])
 
 
   const displayOptionList = ref(props.options) 
 
-  function filterFn (val, update) {
-    try {
-         if (val === '') {
-        update(() => {
-          displayOptionList.value = _merge()
-        })
-        return
-      }
+  function setValue(v){
+    emits('update:selected', v)
+    emits('onset', v)
+  }
 
+  function filterFn (val, update) {
+    if (val === '') {
       update(() => {
-        displayOptionList.value = _merge(val)
+        displayOptionList.value = _merge()
       })
-    } catch(e){
-      console.log(e)
+      return
     }
-   
+
+    update(() => {
+      displayOptionList.value = _merge(val)
+    })   
   }
 
   function _merge(val){

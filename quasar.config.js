@@ -67,8 +67,12 @@ module.exports = configure(function (/* ctx */) {
       // minify: false,
       // polyfillModulePreload: true,
       // distDir
-
-      // extendViteConf (viteConf) {},
+      extendViteConf(viteConf) {
+        viteConf.define = {
+          ...(viteConf.define || {}),
+          __BUILD_DATE__: JSON.stringify(new Date().toISOString()),
+        }
+      },
       // viteVuePluginOptions: {},
 
       vitePlugins: [
@@ -174,6 +178,7 @@ module.exports = configure(function (/* ctx */) {
       inspectPort: 5858,
 
       bundler: 'packager', // 'packager' or 'builder'
+      icon: 'src-electron/icons/logo.png',
 
       packager: {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
@@ -190,11 +195,25 @@ module.exports = configure(function (/* ctx */) {
 
       builder: {
         // https://www.electron.build/configuration/configuration
-
+        icon: 'src-electron/icons/logo.png',
         appId: 'tourwizard'
+      },
+      extendElectronMain(mainProcess) {
+        const path = require('path')
+        const { Tray, nativeImage } = require('electron')
+
+        let tray = null
+
+        mainProcess.whenReady().then(() => {
+          const iconPath = path.join(__dirname, '..', 'src-electron', 'icons', 'logo.png')
+          const trayIcon = nativeImage.createFromPath(iconPath)
+
+          tray = new Tray(trayIcon)
+          tray.setToolTip('Tour Wizard')
+        })
       }
     },
-
+    
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-browser-extensions/configuring-bex
     bex: {
       contentScripts: [

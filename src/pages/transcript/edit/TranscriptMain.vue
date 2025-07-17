@@ -9,19 +9,19 @@
       <q-card>
         <q-card-section>
           <LabelWrapper name="Name">
-            <q-input class="col" filled v-model="store.name" />
+            <FInput class="col" v-model="store.name" />
           </LabelWrapper>
-          <div class="row">
-            <LabelWrapper name="Year" class="col q-mr-md">
-              <q-input class="col" filled v-model="store.year" />
-            </LabelWrapper>
-            <LabelWrapper class="col" name="Status">
-              <StatusPicker v-model="store.status" />
-            </LabelWrapper>
-          </div>
-
-          <LabelWrapper name="Location">
-            <LocationSelect v-model="store.location" />
+          <LabelWrapper name="Year">
+            <FInput class="col" v-model="store.year" />
+          </LabelWrapper>
+          <LabelWrapper name="Status">
+            <StatusPicker v-model="store.status" />
+          </LabelWrapper>
+          <LabelWrapper name="Tags">
+            <ChipAutoAddInput 
+              class="col"
+              v-model:chips="store.tags"
+              v-model:options="tagOptions" />
           </LabelWrapper>
 
         </q-card-section>
@@ -36,17 +36,27 @@
 </template>
     
 <script setup>
-  import {computed} from 'vue';
+  import {computed, ref, onMounted} from 'vue';
+import { Database } from 'src/db/db';
   import { useScriptStore } from 'src/modules/transcripts/ScriptStore';
   import LabelWrapper from 'src/components/wrappers/LabelWrapper.vue';
   import StatusPicker from 'src/modules/transcripts/StatusPicker.vue';
+import ChipAutoAddInput from 'src/components/forms/ChipAutoAddInput.vue';
   import TextEditor from 'src/components/forms/TextEditor.vue';
-  import LocationSelect from 'src/modules/location/LocationSelect.vue';
+  import FInput from 'src/components/forms/FInput.vue';
     
   const store = useScriptStore()
+  const ScriptDatabase = new Database('transcripts')
+
+  const tagOptions = ref([])
     
   const expandHeader = computed(_ => {
     return store.name || '(No Name)'
   })
+
+  // Get the tags
+onMounted(async () => {
+  tagOptions.value = await ScriptDatabase.getGroup('tags')
+})
       
 </script>

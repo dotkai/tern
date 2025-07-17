@@ -1,11 +1,7 @@
 <template>
 <q-page>
   <div class="row justify-between q-ma-md">
-    <q-input filled v-model="filter" label="Filter">
-      <template v-slot:prepend>
-        <q-icon name="search" />
-      </template>
-    </q-input>
+    <FilterInput v-model:filter="filter" />
     <ImageAddGalleryInput :postupload="init" />
   </div>
 
@@ -14,10 +10,10 @@
   <section>
     <EmptyContentBlock v-if="!gallery.length" label="No Images" icon="image" />
 
-    <div class="row wrap justify-around q-mx-md">
+    <div class="row wrap q-mx-md">
       <ImageGalleryCard 
         class="q-ma-sm hover"
-        v-for="item in gallery" 
+        v-for="item in displayGallery" 
         :key="item._id"
         v-bind="item"
         @onupdate="v => updateGalleryItem(item, v)"
@@ -29,12 +25,13 @@
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import {ref, computed} from 'vue'
 import { NotifyService } from 'src/services';
 import { Database } from 'src/db/db';
 import EmptyContentBlock from 'src/components/space_holders/EmptyContentBlock.vue';
 import ImageGalleryCard from 'src/modules/images/gallery/ImageGalleryCard.vue';
 import ImageAddGalleryInput from '../../modules/images/gallery/ImageAddGalleryInput.vue';
+import FilterInput from 'src/components/forms/FilterInput.vue';
 
 const Images = new Database('image_files')
 const message = new NotifyService('Image')
@@ -42,7 +39,22 @@ const message = new NotifyService('Image')
 const filter = ref(null)
 const gallery = ref([])
 
-  init()
+
+const displayGallery = computed(() => {
+  const keyword = filter.value?.toLowerCase().trim()
+  if (!keyword) return gallery.value
+
+  return gallery.value.filter(item => {
+    const nameMatch = item.name?.toLowerCase().includes(keyword)
+    const tagsMatch = Array.isArray(item.tags)
+      ? item.tags.some(tag => tag.toLowerCase().includes(keyword))
+      : false
+
+    return nameMatch || tagsMatch
+  })
+})
+
+init()
 
 function init(){
   Images.getAll()

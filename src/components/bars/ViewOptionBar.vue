@@ -1,6 +1,6 @@
 <template>
 <div class="row justify-between q-ma-md">
-    <FilterInput :filter="filter" />
+    <FilterInput :filter="filter" @update:filter="v => $emit('update:filter', v)" />
     <div>
         <q-btn 
             v-if="addlink" 
@@ -19,5 +19,6 @@ const props = defineProps({
     filter: String,
     addlink: Object
 })
+defineEmits(['update:filter'])
 const navstore = useNavigationStore()
 </script>

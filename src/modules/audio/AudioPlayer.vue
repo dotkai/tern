@@ -3,7 +3,7 @@
     <div>
         <div class="text-center q-mx-md">
         <q-btn round v-if="!isLoading" :icon="isPlaying? 'pause' : 'play_arrow'" size="md"
-            @click="play" />
+            @click.stop="play" />
         <q-circular-progress v-if="isLoading" size="72px" indeterminate color="primary" />
         </div>
 
@@ -13,7 +13,7 @@
     </div>
 
     <div class="wrapper col" part="wrapper">
-        <div id="waveform"></div>
+        <div :id="audioId"></div>
     </div>
 </div>
 </template>
@@ -35,6 +35,10 @@ const duration = computed(_ => {
     return _millisToMinutesAndSeconds(wavesurfer.value.getDuration())
 })
 
+const audioId = computed(() => {
+    return 'waveform-'+ new Date().getTime()
+})
+
 onMounted(() => {
     if (!wavesurfer.value) createWaveSurfer();
 })
@@ -46,7 +50,7 @@ function play(){
 
 function createWaveSurfer() {
     wavesurfer.value = WaveSurfer.create({
-        container: "#waveform",
+        container: "#" + audioId.value,
         waveColor: "grey",
         progressColor: "hsla(200, 100%, 30%, 0.5)",
         cursorColor: "#ddd5e9",
@@ -69,7 +73,6 @@ function createWaveSurfer() {
         autoCenter: true
     });
 
-    console.log(props.audioPath)
     wavesurfer.value.load('/audio_files/'+props.audioPath);
     wavesurfer.value.on('timeupdate', (curr) => {
         currentTime.value = _millisToMinutesAndSeconds(curr)

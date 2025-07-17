@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, Menu } from 'electron'
 import path from 'path'
 import os from 'os'
 
@@ -24,6 +24,55 @@ function createWindow () {
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD)
     }
   })
+  const template = [
+  {
+    label: 'File',
+    submenu: [
+      {
+      label: 'Export Backup',
+      click: () => {
+        mainWindow.webContents.send('trigger-export-backup')
+      }
+    },
+    {
+      label: 'Import Backup',
+      click: () => {
+        mainWindow.webContents.send('trigger-import-backup')
+      }
+    },
+    { type: 'separator' },
+      { role: 'quit' }
+    ]
+  },
+  {
+    label: 'Edit',
+    submenu: [
+      { role: 'undo' },
+      { role: 'redo' },
+      { type: 'separator' },
+      { role: 'cut' },
+      { role: 'copy' },
+      { role: 'paste' }
+    ]
+  },
+  {
+    label: 'View',
+    submenu: [
+      { role: 'reload' },
+      { role: 'toggledevtools' },
+      { type: 'separator' },
+      { role: 'resetzoom' },
+      { role: 'zoomin' },
+      { role: 'zoomout' },
+      { type: 'separator' },
+      { role: 'togglefullscreen' }
+    ]
+  }
+  // remove Help menu
+]
+
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+
 
   mainWindow.loadURL(process.env.APP_URL)
 

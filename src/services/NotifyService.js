@@ -23,11 +23,17 @@ export class NotifyService {
             message: `Removed ${this.name}: ${value}`
         })
     }
+    userError(message){
+        this.$q.notify({
+            type: 'negative',
+            message: `Error ${message}`
+        })
+    }
     error(message, log){
         this.$q.notify({
             type: 'negative',
             message: `Error ${message || log}`
         })
-        console.log(log)
+        console.error(log)
     }
 }

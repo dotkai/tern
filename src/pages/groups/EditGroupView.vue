@@ -6,7 +6,7 @@
 
   <div class="q-pa-lg">
     <LabelWrapper name="Name">
-        <q-input class="col" filled v-model="name" />
+        <q-input class="col" filled dense v-model="name" />
     </LabelWrapper>
     <LabelWrapper name="List">
         <div class="col">
@@ -26,7 +26,11 @@
             <EmptyContentBlock v-if="!updateList.length" label="No List Items" icon="list" />
             <SortList 
                 v-model="updateList"
-                :displayList="updateList" />
+                :displayList="updateList">
+                <template #header="{ item }">
+                    <div class=" text-subtitle2">{{item.name || item}}</div>
+                </template>
+            </SortList>
         </div>
     </LabelWrapper>
   </div>
@@ -41,7 +45,7 @@ import {NotifyService, RouteService} from 'src/services'
 import EmptyContentBlock from 'src/components/space_holders/EmptyContentBlock.vue';
 import EditMenuBar from 'src/components/bars/EditMenuBar.vue';
 import LabelWrapper from 'src/components/wrappers/LabelWrapper.vue';
-import SortList from 'src/components/forms/SortList.vue';
+import SortList from 'src/components/lists/SortList.vue';
 
 const GroupData = new Database('groups')
 const message = new NotifyService('Group')

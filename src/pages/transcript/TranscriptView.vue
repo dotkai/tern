@@ -7,13 +7,17 @@
     :rows="rows"
     :columns="columns"
     row-key="_id"
-    @row-click="(evt, row) => $router.push({ name: 'edit_script', params: { script_id: row._id } })"
-  />
+    @row-click="(evt, row) => $router.push({ name: 'edit_script', params: { script_id: row._id } })">
+    <template #body-cell-tags="props">
+      <TableChipCol :props="props" />
+    </template>
+  </q-table>
 </q-page>
 </template>
 
 <script setup>
 import ViewOptionBar from 'src/components/bars/ViewOptionBar.vue';
+import TableChipCol from 'src/components/table/TableChipCol.vue';
 import { Database } from 'src/db/db';
 import { ref } from 'vue';
 
@@ -21,8 +25,9 @@ const ScriptData = new Database('transcripts')
 
 const columns = [
   { name: 'name', label: 'Name', field: 'name', align: 'left', sortable: true },
-  { name: 'toedit', label: 'To Edit', field: 'toedit', align: 'left', sortable: true },
-  { name: 'complete', label: 'Complete', field: 'complete', align: 'left', sortable: true }
+  { name: 'year', label: 'Year', field: 'year', align: 'left', sortable: true },
+  { name: 'status', label: 'Status', field: 'status', align: 'left', sortable: true },
+  { name: 'tags', label: 'Tags', field: 'tags', align: 'left' }
 ]
 const rows = ref([])
 

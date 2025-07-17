@@ -30,9 +30,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue';
-import { Database } from 'src/db/db';
-import FindSelectImageButton from './FindSelectImageButton.vue';
+import FindSelectImageButton from '../FindSelectImageButton.vue';
 
 const props = defineProps({
     path: String

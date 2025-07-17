@@ -5,21 +5,44 @@
     @submit="submit"
     @remove="confirmRemove" />
   
-  <div class="row col">
-    <div class="col-2 bg-grey-2">
-      <LinkList :list="linksList"/>
-    </div>
-    <div class="q-pa-lg col">
-      <router-view />
-    </div>
+  <div>
+    <q-splitter
+      v-model="splitterModel"
+      :limits="[50, 100]"
+    >
+
+      <template v-slot:before>
+        <div class="q-pa-lg">
+          <slot></slot>
+        </div>
+      </template>
+
+      <template v-slot:after>
+        <div>
+          <q-tabs
+            v-model="tab"
+            class="text-grey"
+          >
+            <q-tab v-for="link in linksList" 
+              :key="link.title"
+              :name="link.title"
+              :icon="link.icon"  />
+          </q-tabs>
+          <div class="q-pa-sm">
+            <slot :tab="tab" name="helper"></slot>
+          </div>
+        </div>
+      </template>
+
+    </q-splitter>
   </div>
 </q-page>
 </template>
 
 <script setup>
+import {ref } from 'vue';
   import { RouteService, NotifyService } from 'src/services';
-  import EditMenuBar from 'src/components/bars/EditMenuBar.vue'
-  import LinkList from 'src/components/wrappers/LinkList.vue';
+  import EditMenuBar from 'src/components/bars/EditMenuBar.vue';
 
   const props = defineProps({
     name: String,
@@ -29,10 +52,11 @@
   })
 
   const route = new RouteService(props.routeData)
-  const message = new NotifyService(props.name)
+  const message = new NotifyService(props.name);
+  const splitterModel = ref(50)
+  const tab = ref(props.linksList[0].title)
 
 
-    console.log(props.store)
   props.store.init(route.getEditId(), message)
 
   async function submit(){

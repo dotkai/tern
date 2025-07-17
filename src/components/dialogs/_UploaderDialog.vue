@@ -75,7 +75,7 @@
 </template>
 
 <script>
-  import SortList from './forms/SortList.vue'
+  import SortList from './lists/SortList.vue'
 export default {
   props: {
     modelValue: Array,

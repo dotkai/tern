@@ -27,10 +27,11 @@
  *   }
  * }
  */
-import { contextBridge, webUtils } from 'electron'
+import { contextBridge, webUtils, ipcRenderer } from 'electron'
 import path from 'path'
 // import { nanoid } from 'nanoid'
 import fs from 'fs'
+import { app } from '@electron/remote'
 
 contextBridge.exposeInMainWorld('electronFs', {
     // copyFile: fs.copyFile,
@@ -56,6 +57,19 @@ contextBridge.exposeInMainWorld('electronFs', {
       fs.unlinkSync(path.join(publicFolder, filePath));
     } catch(e){
       console.log(e)
+    }
+  }
+})
+
+contextBridge.exposeInMainWorld('electronAPI', {
+  onExportBackup: (callback) => ipcRenderer.on('trigger-export-backup', callback),
+  onImportBackup: (callback) => ipcRenderer.on('trigger-import-backup', callback),
+  getUserDataPath: () => app.getPath('userData'),
+  pathJoin: (...args) => path.join(...args),
+  fsWriteFile: (filePath, buffer) => fs.writeFileSync(filePath, buffer),
+  fsMkdir: (dir) => {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true })
     }
   }
 })

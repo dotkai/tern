@@ -1,5 +1,7 @@
 <template>
-<q-input filled :model-value="filter" @update:model-value="v => $emit('update:filter', v)" label="Filter">
+<q-input filled :model-value="filter" 
+    dense
+    @update:model-value="v => $emit('update:filter', v)" label="Filter">
     <template v-slot:prepend>
     <q-icon name="search" />
     </template>

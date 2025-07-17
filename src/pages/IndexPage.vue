@@ -6,15 +6,24 @@
   <q-separator />
 
   <EmptyContentBlock v-if="!rows.length" label="No Tours" icon="tour" />
-  <section class="row justify-around">
+  <section class="row">
     <q-card class="my-card col-5"
       v-for="row in rows"
       :key="row._id"
       @click="$router.push({ name: 'edit_tour', params: { tour_id: row._id } })">
       <div style="position: relative;">
-        <q-img :src="'/image_files/'+row.cover_image_path" 
+        <q-img 
+          v-if="row.cover_image_path"
+          :src="'/image_files/'+row.cover_image_path" 
           height="250px"
-          error-src="util_images/noimage.png"></q-img>
+          error-src="util_images/noimage.png"></q-img>        
+        <div
+          v-else
+          class="bg-grey-4 row justify-center items-center"     
+          style="height: 250px;">
+          <q-icon name="image" size="lg" color="grey-6"/>
+        </div>
+        
         <div class="card-title absolute-bottom text-h6">
           {{row.title || '(No Name)'}}
         </div>

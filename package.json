@@ -1,8 +1,8 @@
 {
   "name": "tourwizard",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Easily manage my tour planning db",
-  "productName": "Tour Wizard",
+  "productName": "Tern",
   "author": "Kai Austin <kaiblogs@hotmail.com>",
   "private": true,
   "scripts": {
@@ -14,11 +14,16 @@
   },
   "dependencies": {
     "@electron/remote": "^2.1.2",
-    "@liripeng/vue-audio-player": "^2.0.4",
     "@quasar/extras": "^1.16.12",
     "@vueup/vue-quill": "^1.2.0",
     "axios": "^1.7.7",
+    "crunker": "^2.4.0",
     "dexie": "^4.0.8",
+    "file-saver": "^2.0.5",
+    "html-docx-js": "^0.3.1",
+    "html2pdf.js": "^0.10.3",
+    "jszip": "^3.10.1",
+    "leaflet": "^1.9.4",
     "lodash": "^4.17.21",
     "nanoid": "^5.0.7",
     "pinia": "^2.2.2",

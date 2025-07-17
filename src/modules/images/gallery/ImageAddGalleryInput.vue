@@ -1,6 +1,7 @@
 <template>
 <div class="row col q-ml-md">      
     <q-file class="col" 
+    dense
     multiple 
     filled 
     clearable

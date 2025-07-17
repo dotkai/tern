@@ -1,57 +1,68 @@
+import _ from 'lodash'
 import { defineStore } from 'pinia'
 import { Database } from 'src/db/db'
 
 const ScriptData = new Database('transcripts')
 
-const state = () => ({
-    name: '',
-    year: null,
-    status: null,
+const getBase = () => {
+    return {
+        name: '',
+        year: null,
+        status: null,
+        tags: [],
 
-    text: null,
-    location: [],
-    images: [],
-    audio: [],
-    notes: []
-})
+        text: null,
+        locations: [],
+        images: [],
+        audio: [],
+        notes: [],
+        sources: []
+    }
+}
+const state = () => (getBase())
 
 const getters = {
     wordCount: (state) => (state.text || '').split(' ').length
 }
 
 const actions = {
-    async init(ACTIVE_ID, notify){
-        this.ACTIVE_ID = ACTIVE_ID
+    async init(ACTIVE_ID){
         if(ACTIVE_ID === 'NEW'){
             // Create "Empty page"
-            const nuid = await ScriptData.add()
-            Object.assign(this, {
-                ...Object.keys(s).forEach((i) => {
-                    if(['location', 'audio', 'images', 'notes'].includes(i)) return s[i] = []
-                    s[i] = null
-                }),
-                ACTIVE_ID: nuid
-            })
-            notify.add('New Script')
+            Object.assign(this, getBase())
+            this.ACTIVE_ID = null;
             return;
         }
         const data = await ScriptData.getOne(ACTIVE_ID)
-        Object.assign(this, data)
+        Object.assign(this, data);
+        this.ACTIVE_ID = ACTIVE_ID;
     },
     async update(){
-        await ScriptData.update(this.ACTIVE_ID, {
+        const data = {
             name: this.name,
             year: this.year,
             status: this.status,
             text: this.text,
-            location: JSON.parse(JSON.stringify(this.location)),
+            tags: JSON.parse(JSON.stringify(this.tags)),
+            locations: JSON.parse(JSON.stringify(this.locations)),
             notes: JSON.parse(JSON.stringify(this.notes)),
             images: JSON.parse(JSON.stringify(this.images)),
             audio: JSON.parse(JSON.stringify(this.audio))
-        })
+        }
+
+        
+        // Already created
+        if(this.ACTIVE_ID) return ScriptData.update(this.ACTIVE_ID, data)
+        // Make new
+        const nuid = await ScriptData.add(data)
+        this.ACTIVE_ID = nuid;
     },
     async remove(){
         await ScriptData.remove(this.ACTIVE_ID)
+    },
+
+    addLocationAttachment(source){
+        this.images = _.unionBy(this.images, source.images, 'image_id')
     }
 }
 

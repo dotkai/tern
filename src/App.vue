@@ -2,46 +2,51 @@
   <router-view />
 </template>
 
-<script>
-import { defineComponent } from 'vue'
+<script setup>
+import { onMounted, onBeforeUnmount, getCurrentInstance } from 'vue'
 import { useQuasar } from 'quasar'
+import onExport from './utils/onExport'
+import onImport from './utils/onImport'
 
-export default defineComponent({
-  name: 'App',
-  beforeCreate () {
-    // Notification hooks
-    this.$root.$error = this.triggerError;
-    this.$root.$success = this.triggerPositive;
+const $q = useQuasar()
+const vm = getCurrentInstance()
 
-  },
-  
-  setup(){
-    const $q = useQuasar()
+function triggerError(err) {
+  $q.notify({
+    type: 'negative',
+    message: err?.message || 'Error',
+    actions: [{ icon: 'clear', color: 'white', round: true }]
+  })
+}
 
-    return {
-      triggerError(err){
-        $q.notify({
-          type: 'negative',
-          message: err? err.message : 'Error',
-          actions: [{
-            icon: 'clear',
-            color: 'white',
-            round: true
-          }]
-        })
-      },
-      triggerPositive(msg) {
-        $q.notify({
-          type: 'positive',
-          message: msg,
-          actions: [{
-            icon: 'clear',
-            color: 'white',
-            round: true
-          }]
-        })
-      }
-    }
-  }
+function triggerPositive(msg) {
+  $q.notify({
+    type: 'positive',
+    message: msg,
+    actions: [{ icon: 'clear', color: 'white', round: true }]
+  })
+}
+
+// Make global notify methods
+vm.appContext.app.config.globalProperties.$error = triggerError
+vm.appContext.app.config.globalProperties.$success = triggerPositive
+
+// Define IPC listeners
+function handleExport() {
+  onExport().catch(triggerError)
+}
+
+function handleImport() {
+  onImport().catch(triggerError)
+}
+
+onMounted(() => {
+  window.electronAPI?.onExportBackup(handleExport)
+  window.electronAPI?.onImportBackup(handleImport)
+})
+
+onBeforeUnmount(() => {
+  window.electronAPI?.removeExportBackupListener?.(handleExport)
+  window.electronAPI?.removeImportBackupListener?.(handleImport)
 })
 </script>

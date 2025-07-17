@@ -21,7 +21,6 @@ export class RouteService {
                 [this.param_id]: nuParamId
             }
         })
-        console.log('REfresh page')
     }
     back(){
         this.router.push({ name: this.back_root })

@@ -4,6 +4,7 @@
     <div>
         <div class="row justify-between q-pa-md">
             <FilterInput v-model:filter="filter" />
+            <ImageAddGalleryInput :postupload="init" />
             <div>
                 <q-btn class="q-mx-md" flat label="Cancel" v-close-popup
                     @click="selected = []" />
@@ -33,9 +34,10 @@ import { ref } from 'vue';
 import _ from 'lodash'
 import { NotifyService } from 'src/services';
 import { Database } from 'src/db/db';
-import BatchSelectMediaDialog from 'src/components/BatchSelectMediaDialog.vue';
+import BatchSelectMediaDialog from 'src/components/dialogs/BatchSelectMediaDialog.vue';
 import FilterInput from 'src/components/forms/FilterInput.vue';
 import ImageCard from './ImageCard.vue';
+import ImageAddGalleryInput from './gallery/ImageAddGalleryInput.vue';
 
 const props = defineProps({
     images: Array

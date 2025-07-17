@@ -18,11 +18,12 @@
     <q-separator class="q-my-md" />
 
     <EmptyContentBlock v-if="!store.notes.length" label="No Notes" icon="note" />
-    <NoteCard v-for="note in store.notes" :key="note.created"
+    
+    <NoteCard v-for="note in displayNotes" :key="note.created"
         :updated="note.updated"
         :text="note.text"
         class="hover"
-        @click="editNote(note)" />
+        @click="$event => editNote($event, note)" />
 </section>
 </template>
 
@@ -32,12 +33,18 @@ import NoteCard from 'src/modules/transcripts/NoteCard.vue';
 import NoteEditDialog from 'src/modules/transcripts/NoteEditDialog.vue';
 import EmptyContentBlock from 'src/components/space_holders/EmptyContentBlock.vue';
 import { useScriptStore } from 'src/modules/transcripts/ScriptStore';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 const store = useScriptStore()
 const dialog = ref(null)
-const filter = ref(null)
+const filter = ref('')
 const activeNote = ref({})
+
+const displayNotes = computed(() => {
+    return store.notes.filter(v => {
+        return v.text?.includes(filter.value)
+    })
+})
 
 
 function addNote(){
@@ -50,7 +57,8 @@ function addNote(){
     dialog.value = true;
 }
 
-function editNote(note){
+function editNote(event, note){
+    if (event.target.closest('a')) return;
     activeNote.value = note
     dialog.value = true
 }
