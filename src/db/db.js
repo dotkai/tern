@@ -105,8 +105,7 @@ async function _extractNested(records, fields = []) {
 
 
 // NOTE: DO NOT INDEX IMAGES
-
-db.version(2).stores({
+db.version(4).stores({
   tours: `++_id, 
     cover_image_path,
     title, 
@@ -133,7 +132,6 @@ db.version(2).stores({
         status,
         locations,
         notes,
-        sources,
         images,
         audio`,
     

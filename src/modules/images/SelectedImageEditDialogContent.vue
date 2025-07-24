@@ -2,10 +2,9 @@
 <div>
   <q-card-section class="row">
       <div class="col q-pa-md">
-          <q-img 
-              error-src="util_images/noimage.png"
-              spinner-color="blue" 
-              class="display-image" :src="'/image_files/'+path"/>
+        <ImageWrapper
+          class="display-image" 
+          :filename="path"/>
       </div>
       <q-separator vertical inset />
       <div class="col q-pa-md">
@@ -29,10 +28,11 @@
 </template>
 
 <script setup>
-import { watch, ref } from 'vue'
+import { ref } from 'vue'
 import SaveButton from 'src/components/buttons/SaveButton.vue'
 import CancelButton from 'src/components/buttons/CancelButton.vue'
 import RemoveButton from 'src/components/buttons/RemoveButton.vue'
+import ImageWrapper from 'src/components/wrappers/ImageWrapper.vue'
 
 const props = defineProps({
   path: String,

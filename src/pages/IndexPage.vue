@@ -12,18 +12,10 @@
       :key="row._id"
       @click="$router.push({ name: 'edit_tour', params: { tour_id: row._id } })">
       <div style="position: relative;">
-        <q-img 
-          v-if="row.cover_image_path"
-          :src="'/image_files/'+row.cover_image_path" 
-          height="250px"
-          error-src="util_images/noimage.png"></q-img>        
-        <div
-          v-else
-          class="bg-grey-4 row justify-center items-center"     
-          style="height: 250px;">
-          <q-icon name="image" size="lg" color="grey-6"/>
-        </div>
-        
+        <ImageWrapper
+          :filename="row.cover_image_path"
+          height="250px" />
+
         <div class="card-title absolute-bottom text-h6">
           {{row.title || '(No Name)'}}
         </div>
@@ -43,6 +35,7 @@
   import ViewOptionBar from 'src/components/bars/ViewOptionBar.vue';
   import EmptyContentBlock from 'src/components/space_holders/EmptyContentBlock.vue';
 import { NotifyService } from 'src/services';
+import ImageWrapper from 'src/components/wrappers/ImageWrapper.vue';
 
   const TourData = new Database('tours')
   const message = new NotifyService()

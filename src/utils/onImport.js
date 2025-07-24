@@ -1,42 +1,33 @@
 import JSZip from 'jszip'
-import { db, importDatabase } from 'src/db/db' // Get database
+import { importDatabase } from 'src/db/db'
 
 export default async () => {
-  const input = document.createElement('input')
-    input.type = 'file'
-    input.accept = '.zip'
+  const filePath = await window.electronAPI.openFileDialog()
+  if (!filePath) return
 
-    input.onchange = async () => {
-      const file = input.files[0]
-      if (!file) return
+  try { 
+    const zip = await JSZip.loadAsync(await window.electronFs.fsReadFile(filePath))
+    const dbJson = await zip.file('database.json').async('string')
+    const data = JSON.parse(dbJson)
+    await importDatabase(data)
 
-      const zip = await JSZip.loadAsync(file)
-
-      // 1. Restore Dexie
-      const dbJson = await zip.file('database.json').async('string')
-      const data = JSON.parse(dbJson)
-      await importDatabase(data) // assumes wrapper method to load data
-
-      // 2. Write files to file system (you need Electron fs access)
-      const userDataPath = window.electronAPI.getUserDataPath()
-
-      zip.forEach(async (relativePath, zipEntry) => {
-        if (zipEntry.dir) return
-        if (
-          relativePath.startsWith('image_files') ||
-          relativePath.startsWith('audio_files')
-        ) {
-          const fullPath = window.electronAPI.pathJoin(userDataPath, relativePath)
-          const content = await zipEntry.async('nodebuffer')
-
-          window.electronAPI.fsMkdir(path.dirname(fullPath))
-          window.electronAPI.fsWriteFile(fullPath, content)
-        }
-      })
-
-
-      alert('Import complete')
+    // Write other files like before...
+    for (const entry of Object.values(zip.files)) {
+      // Directory
+      if (entry.dir){
+        await window.electronFs.fsMkdir(entry.name)
+        continue;
+      }
+      // Images
+      if(
+        entry.name.startsWith('image_files') ||
+        entry.name.startsWith('audio_files')
+      ){
+        const content = await entry.async('arraybuffer')
+        await window.electronFs.importFile(content, entry.name)
+      }
     }
-
-    input.click()
+  } catch(e){
+    console.error(e)
+  }
 }

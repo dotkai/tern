@@ -11,21 +11,10 @@
     @row-click="(evt, row) => $router.push({ name: 'edit_location', params: { location_id: row._id } })">
 
     <template #body-cell-image="props">
-      <q-td :props="props">
-        <div style="width: 64px; height: 64px;">
-          <q-img
-            v-if="props.row.images?.[0]?.path"
-            :src="'/image_files/' + props.row.images[0].path"
-            :ratio="1"
-            style="border-radius: 4px;"
-            spinner-color="grey-5"
-          />
-          <div
-            v-else
-            class="bg-grey-3"
-            style="width: 100%; height: 100%; border-radius: 4px;"
-          />
-        </div>
+      <q-td :props="props" style="width:70px">
+        <ImageWrapper
+          :filename="props.row.images[0].path"
+          style="border-radius: 4px;width: 64px; height: 64px;"/>
       </q-td>
     </template>
 
@@ -72,6 +61,7 @@ import { computed, onMounted, ref } from 'vue';
 import { Database } from 'src/db/db';
 import { NotifyService } from 'src/services';
 import ViewOptionBar from 'src/components/bars/ViewOptionBar.vue';
+import ImageWrapper from 'src/components/wrappers/ImageWrapper.vue';
 
 const LocationData = new Database('locations')
 const message = new NotifyService('Location')

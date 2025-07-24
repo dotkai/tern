@@ -177,7 +177,7 @@ module.exports = configure(function (/* ctx */) {
       // specify the debugging port to use for the Electron app when running in development mode
       inspectPort: 5858,
 
-      bundler: 'packager', // 'packager' or 'builder'
+      bundler: 'builder', // 'packager' or 'builder'
       icon: 'src-electron/icons/logo.png',
 
       packager: {
@@ -196,7 +196,20 @@ module.exports = configure(function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
         icon: 'src-electron/icons/logo.png',
-        appId: 'tourwizard'
+        appId: 'com.dotkai.tern',
+        productName: 'Tern',
+        copyright: 'Copyright © 2025',
+        directories: {
+          output: 'dist/electron/Packaged'
+        },
+        win: {
+          target: 'nsis',
+          icon: 'public/icons/logo.ico' // path to your .ico file
+        },
+        nsis: {
+          oneClick: false,
+          allowToChangeInstallationDirectory: true
+        }
       },
       extendElectronMain(mainProcess) {
         const path = require('path')

@@ -5,6 +5,12 @@ export class NotifyService {
         this.$q = useQuasar()
         this.name = name;
     }
+    message(value){
+        this.$q.notify({
+            type: 'positive',
+            message: value
+        })
+    }
     add(value){
         this.$q.notify({
             type: 'positive',

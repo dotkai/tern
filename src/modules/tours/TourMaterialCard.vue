@@ -2,7 +2,8 @@
 <q-card class="shadow-1 q-mb-md">
   <q-card-section>
     <div class="text-center">
-      <img :src="'image_files/'+image.path"
+      <BaseImage
+        :src="image.path"
         style="max-width: 100%" />
     </div>
     <div class="row justify-between text-subtitle2">
@@ -15,7 +16,9 @@
 </template>
 
 <script setup>
-defineProps({
+import BaseImage from 'src/components/wrappers/BaseImage.vue';
+
+const props = defineProps({
   image: Object
 })
 </script>

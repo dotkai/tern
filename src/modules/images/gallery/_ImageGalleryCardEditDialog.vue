@@ -5,10 +5,9 @@
 
       <q-card-section class="row">
           <div class="col q-pa-md">
-              <q-img 
-                spinner-color="blue" 
-                error-src="util_images/noimage.png"
-                class="display-image" :src="'/image_files/'+path"/>
+            <ImageWrapper
+              :filename="path"
+              class="display-image" />
           </div>
           <q-separator vertical inset />
           <div class="col q-pa-md">
@@ -38,6 +37,7 @@ import SaveButton from 'src/components/buttons/SaveButton.vue';
 import RemoveButton from 'src/components/buttons/RemoveButton.vue';
 import MaxMinDialogWrapper from 'src/components/dialogs/MaxMinDialog.vue';
 import ChipAutoAddInput from 'src/components/forms/ChipAutoAddInput.vue';
+import ImageWrapper from 'src/components/wrappers/ImageWrapper.vue';
 
 const props = defineProps({
     modelValue: Boolean,

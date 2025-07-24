@@ -21,7 +21,7 @@
         <template #header="{item}">
           <div class="row col">
           <ImageWrapper
-              :path="item.path"
+              :filename="item.path"
               />
           <div class="col q-py-md">
               <div class=" text-subtitle2">{{ item.name }}</div>

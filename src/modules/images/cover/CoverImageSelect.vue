@@ -1,20 +1,13 @@
 <template>
 <div class="col" style="position: relative;">
     <div>
-        <q-img
-            v-if="path" 
-            :src="'/image_files/'+path"
-            height="200px">
+        <ImageWrapper
+            :filename="path"
+            style="height: 200px">        
             <div class="absolute-bottom bg-grey-4">
                 CAPTION
             </div>
-        </q-img>
-        <div 
-            v-if="!path"
-            class="bg-grey-4 row justify-center items-center" 
-            style="height:200px;">
-            <q-icon name="image" size="lg" color="grey-6"/>
-        </div>
+        </ImageWrapper>
     </div>
     <FindSelectImageButton
         style="position:absolute;bottom:5px;left:5px;"
@@ -30,6 +23,7 @@
 </template>
 
 <script setup>
+import ImageWrapper from 'src/components/wrappers/ImageWrapper.vue';
 import FindSelectImageButton from '../FindSelectImageButton.vue';
 
 const props = defineProps({

@@ -15,10 +15,8 @@
     </div>
     <div v-for="script in stop.transcripts" :key="script._id">
         <div v-for="(audio, index) in script.audio" :key="index" class="q-mb-md">
-          <audio controls>
-            <source :src="`/audio_files/${audio.path}`" :type="getAudioMimeType(audio.path)" />
-            Audio file type not supported.
-          </audio>
+          <BaseAudio
+            :src="audio.path" />
         </div>
     </div>
   </div>
@@ -31,6 +29,7 @@ import { useTourStore } from '../TourStore'
 import LabelWrapper from 'src/components/wrappers/LabelWrapper.vue'
 import { ExportService, NotifyService } from 'src/services'
 import ExportButton from '../minis/ExportButton.vue'
+import BaseAudio from 'src/components/wrappers/BaseAudio.vue'
 
 const props = defineProps({
   tour: Object
@@ -64,20 +63,6 @@ function formatLocationName(locations = []) {
     })
     .filter(Boolean)
     .join(', OR ')
-}
-
-function getAudioMimeType(path) {
-  const ext = path.split('.').pop().toLowerCase()
-  const map = {
-    mp3: 'audio/mpeg',
-    wav: 'audio/wav',
-    ogg: 'audio/ogg',
-    m4a: 'audio/mp4',
-    aac: 'audio/aac',
-    flac: 'audio/flac',
-    webm: 'audio/webm'
-  }
-  return map[ext] || 'audio/*'
 }
 
 function getAudioExportName(stop, index){

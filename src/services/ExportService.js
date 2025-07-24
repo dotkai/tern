@@ -46,6 +46,11 @@ async function exportToZip(zipname, htmlContent) {
   const zip = new JSZip()
 
   // 1. Add the HTML page
+  // UPdate file paths + inject html header
+  htmlContent = htmlContent.replace(
+  /(?:src|href)="[^"]*?\.tern\/(image_files|audio_files)\/([^"]+)"/g,
+    (match, folder, filename) => `src="./${folder}/${filename}"`
+  )
   htmlContent = _getHeader(zipname) + htmlContent
   zip.file('index.html', htmlContent)
 
@@ -54,12 +59,14 @@ async function exportToZip(zipname, htmlContent) {
 
   for (const path of assetPaths) {
     const filename = path.split('/').pop()
+    const folder = path.includes('image_files') ? 'image_files' : 'audio_files'
+    const fullPath = folder === 'image_files'? await window.electronFs.getImageUrl(filename)
+      : await window.electronFs.getAudioUrl(filename)
 
-    try {
-      const res = await fetch(path)
-      const blob = await res.blob()
-      zip.folder(path.includes('image_files') ? 'image_files' : 'audio_files')
-         .file(filename, blob)
+    try {      
+      const buffer = await window.electronFs.readAssetFile(fullPath)
+      zip.folder(folder)
+         .file(filename, buffer)
     } catch (err) {
       console.warn(`Could not fetch ${path}`, err)
     }
@@ -80,15 +87,17 @@ function _getHeader(zipname){
 }
 
 function extractAssetPaths(html) {
-  const assetRegex = /(?:src|href)="(\/?(image_files|audio_files)\/[^"]+)"/g
-  const paths = new Set()
+  const assetRegex = /(?:src|href)="(?:\.\/)?(image_files|audio_files)\/([^"]+)"/g
+  const paths = []
   let match
 
   while ((match = assetRegex.exec(html)) !== null) {
-    paths.add(match[1])
+    const folder = match[1]
+    const filename = match[2]
+    paths.push(`${folder}/${filename}`)
   }
 
-  return Array.from(paths)
+  return paths
 }
 
 function getCustomCss(){

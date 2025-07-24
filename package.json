@@ -10,7 +10,8 @@
     "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev -m electron",
-    "build": "quasar build"
+    "build": "quasar build",
+    "make-build": "quasar build -m electron"
   },
   "dependencies": {
     "@electron/remote": "^2.1.2",
@@ -33,9 +34,11 @@
     "wavesurfer.js": "^7.8.6"
   },
   "devDependencies": {
+    "@electron/packager": "^18.3.6",
     "@quasar/app-vite": "^1.8.0",
     "autoprefixer": "^10.4.2",
     "electron": "^32.0.0",
+    "electron-builder": "^24.13.3",
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^9.0.0",

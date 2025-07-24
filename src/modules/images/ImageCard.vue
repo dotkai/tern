@@ -1,8 +1,7 @@
 <template>
 <q-card class="my-card">
-    <q-img :src="'image_files/'+path"
-        error-src="util_images/noimage.png"
-        spinner-color="blue" />
+    <ImageWrapper
+        :filename="path" />
 
     <div class="text-subtitle2 ellipsis q-pa-sm">{{ name }}</div>
     <div>
@@ -12,6 +11,8 @@
 </template>
 
 <script setup>
+import ImageWrapper from 'src/components/wrappers/ImageWrapper.vue';
+
 defineProps({
     path: String,
     name: String,

@@ -16,8 +16,8 @@
   <q-separator class="q-mt-sm q-mb-lg" />
   <div v-for="(stop, index) in tour.stops" :key="stop._id">
     <div v-if="showImages && stop.images[0]?.path" class="text-center">
-      <img
-        :src="'image_files/'+stop.images[0]?.path"
+      <BaseImage
+        :src="stop.images[0]?.path"
         style="max-width: 300px; height: 150px;"
         />
       <p class="text-caption">{{ stop.images[0]?.caption }}</p>
@@ -29,10 +29,8 @@
     <div v-for="script in stop.transcripts" :key="script._id">
       <div v-if="showAudio">
         <div v-for="(audio, index) in script.audio" :key="index" class="q-mb-md">
-          <audio controls>
-            <source :src="`/audio_files/${audio.path}`" :type="getAudioMimeType(audio.path)" />
-            Audio file type not supported.
-          </audio>
+          <BaseAudio
+            :src="audio.path" />
         </div>
       </div>
       <div v-html="script.text"></div>
@@ -58,6 +56,9 @@
 </template>
 
 <script setup>
+import BaseAudio from 'src/components/wrappers/BaseAudio.vue'
+import BaseImage from 'src/components/wrappers/BaseImage.vue'
+
 
 const props = defineProps({
   tour: Object,
@@ -86,19 +87,5 @@ function formatLocationName(locations = []) {
     })
     .filter(Boolean)
     .join(', OR ')
-}
-
-function getAudioMimeType(path) {
-  const ext = path.split('.').pop().toLowerCase()
-  const map = {
-    mp3: 'audio/mpeg',
-    wav: 'audio/wav',
-    ogg: 'audio/ogg',
-    m4a: 'audio/mp4',
-    aac: 'audio/aac',
-    flac: 'audio/flac',
-    webm: 'audio/webm'
-  }
-  return map[ext] || 'audio/*'
 }
 </script>

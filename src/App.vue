@@ -3,46 +3,35 @@
 </template>
 
 <script setup>
-import { onMounted, onBeforeUnmount, getCurrentInstance } from 'vue'
-import { useQuasar } from 'quasar'
+import { onMounted, onBeforeUnmount } from 'vue'
 import onExport from './utils/onExport'
 import onImport from './utils/onImport'
+import { NotifyService } from './services'
+import { useRouter } from 'vue-router'
+import { store } from 'quasar/wrappers'
 
-const $q = useQuasar()
-const vm = getCurrentInstance()
-
-function triggerError(err) {
-  $q.notify({
-    type: 'negative',
-    message: err?.message || 'Error',
-    actions: [{ icon: 'clear', color: 'white', round: true }]
-  })
-}
-
-function triggerPositive(msg) {
-  $q.notify({
-    type: 'positive',
-    message: msg,
-    actions: [{ icon: 'clear', color: 'white', round: true }]
-  })
-}
-
-// Make global notify methods
-vm.appContext.app.config.globalProperties.$error = triggerError
-vm.appContext.app.config.globalProperties.$success = triggerPositive
+const message = new NotifyService('Import')
+const router = useRouter()
 
 // Define IPC listeners
 function handleExport() {
-  onExport().catch(triggerError)
+  onExport().catch(message.error)
 }
 
-function handleImport() {
-  onImport().catch(triggerError)
+async function handleImport() {
+  onImport()
+  .then(() => {
+    message.message('Import successful. Refreshing page...')
+    router.go()
+  })
+  .catch(message.error)
 }
 
 onMounted(() => {
   window.electronAPI?.onExportBackup(handleExport)
   window.electronAPI?.onImportBackup(handleImport)
+
+  store.publicFolder
 })
 
 onBeforeUnmount(() => {
