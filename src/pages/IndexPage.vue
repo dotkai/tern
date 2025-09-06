@@ -14,7 +14,7 @@
       <div style="position: relative;">
         <ImageWrapper
           :filename="row.cover_image_path"
-          height="250px" />
+          style="height: 250px;" />
 
         <div class="card-title absolute-bottom text-h6">
           {{row.title || '(No Name)'}}

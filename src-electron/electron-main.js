@@ -89,9 +89,8 @@ function createWindow () {
     mainWindow.webContents.openDevTools()
   } else {
     // we're on production; no access to devtools pls
-    mainWindow.webContents.openDevTools()
     mainWindow.webContents.on('devtools-opened', () => {
-      // mainWindow.webContents.closeDevTools()
+      mainWindow.webContents.closeDevTools()
     })
   }
 

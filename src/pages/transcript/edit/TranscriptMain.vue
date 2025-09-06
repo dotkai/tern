@@ -28,9 +28,18 @@
       </q-card>
   </q-expansion-item>
 
+  <div class="row justify-between align-center">
+    <div>Text</div>
+    <q-btn flat icon="fit_screen" color="grey" @click="dialog = true"></q-btn>
+  </div>
   <TextEditor v-model:content="store.text" />
   <q-separator />
   <div class="row q-pt-md justify-end">Word Count: {{store.wordCount}}</div>
+
+  
+  <MaxMinDialog v-model="dialog">    
+    <TextEditor v-model:content="store.text" />
+  </MaxMinDialog>
 
 </section>
 </template>
@@ -44,11 +53,13 @@ import { Database } from 'src/db/db';
 import ChipAutoAddInput from 'src/components/forms/ChipAutoAddInput.vue';
   import TextEditor from 'src/components/forms/TextEditor.vue';
   import FInput from 'src/components/forms/FInput.vue';
+import MaxMinDialog from 'src/components/dialogs/MaxMinDialog.vue';
     
   const store = useScriptStore()
   const ScriptDatabase = new Database('transcripts')
 
   const tagOptions = ref([])
+  const dialog = ref(false)
     
   const expandHeader = computed(_ => {
     return store.name || '(No Name)'
