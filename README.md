@@ -39,7 +39,7 @@ This software is built using:
 ## License
 
 **GNU GENERAL PUBLIC LICENSE**, version 3 or later  
-Copyright (c) 2015 Kai Austin
+Copyright (c) 2025 Kai Austin
 
 - [Full license text here](https://www.gnu.org/licenses/gpl-3.0-standalone.html)
 
